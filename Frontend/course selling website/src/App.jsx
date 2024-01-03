@@ -1,5 +1,6 @@
 import AddCourse from './Components/AddCourse.jsx';
 import Appbar from './Components/Appbar.jsx';
+import Course from './Components/Course.jsx';
 import ShowCourses from './Components/ShowCourses.jsx';
 import Signin from './Components/Signin.jsx';
 import Signup from './Components/Signup.jsx';
@@ -19,8 +20,10 @@ function App() {
           <Route path="/Signup" element={<Signup />} />
           <Route path="/addcourse" element={<AddCourse />} />
           <Route path="/showcourses" element={<ShowCourses />} />
+          <Route path='/courses/:courseId' element={<Course />} />
 
-          {/* <Route path="/courses" element={<ShowCourses />} /> */}
+
+          <Route path='*' element={<h1>404 Not Found</h1>} />
         </Routes>
       </Router>
     </>

@@ -30,7 +30,6 @@ function AddCourse() {
       const data = await response.json();
       console.log(data);
       alert("Course added successfully");
-      // Reset form fields after successfully adding the course
       setTitle("");
       setDescription("");
       setPrice("");
