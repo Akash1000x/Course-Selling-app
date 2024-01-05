@@ -10,6 +10,7 @@ function Loader() {
 }
 
 function Course() {
+  {console.log("hi there from course")}
   let { courseId } = useParams();
   let [courses, setCourses] = useState([]);
   const [Loading, setLoading] = useState(true);
@@ -67,6 +68,7 @@ function Course() {
 
   return (
     <div className="bg-[#0F172A] w-full h-screen  flex justify-center  pt-32">
+      {/* {console.log("hi there from course card")} */}
       <div
         className="bg-white p-6 rounded-md max-w-sm m-6 mt-0 cursor-pointer transform transition-transform duration-300 hover:scale-105"
         style={{
@@ -96,6 +98,9 @@ function Course() {
           </span>
         </div>
       </div>
+
+
+      {/* update card */}
       <div>
         <form
           action=""
@@ -149,7 +154,7 @@ function Course() {
   );
 
   async function handleUpdateCourse() {
-    console.log("Updating course");
+    console.log("hi there from Updating course");
     console.log("Course id", courseId);
 
     try {
