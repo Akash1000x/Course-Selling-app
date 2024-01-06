@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import axios from "axios";
+import editPencilPhoto from "../assets/editPencil.png";
+
+import {  useRecoilState } from "recoil";
+import { currentCourseState,titleState,descriptionState,imageState,priceState } from "./atom.js";
 
 function Loader() {
   return (
@@ -10,45 +15,39 @@ function Loader() {
 }
 
 function Course() {
-  {console.log("hi there from course")}
+  {
+    console.log("hi there from course");
+  }
   let { courseId } = useParams();
-  let [courses, setCourses] = useState([]);
   const [Loading, setLoading] = useState(true);
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [imageLink, setImageLink] = useState("");
+  const [updateCourse, setupdateCourse] = useState(false);
 
-  const fetchCourses = async () => {
+  const [currentCourse, setCurrntCourse] = useRecoilState(currentCourseState);
+
+  const fetchCourse = async () => {
     try {
-      const response = await fetch("http://localhost:3000/admin/courses", {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      });
-      const data = await response.json();
-      setCourses(data.courses);
+      const response = await axios.get(
+        `http://localhost:3000/admin/courses/${courseId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      setCurrntCourse(response.data.course);
+
+      console.log(response.data.course);
       setLoading(false);
     } catch (error) {
-      console.log("Error in fetching courses", error);
+      console.log("Error in fetching course", error);
     }
   };
 
   useEffect(() => {
-    fetchCourses();
+    fetchCourse();
   }, []);
-
-  const [currentCourse, setCurrntCourse] = useState({});
-
-  useEffect(() => {
-    for (let i = 0; i < courses.length; i++) {
-      if (courses[i]._id === courseId) {
-        setCurrntCourse(courses[i]);
-      }
-    }
-  }, [courses, courseId]);
 
   if (Loading) {
     return (
@@ -70,7 +69,7 @@ function Course() {
     <div className="bg-[#0F172A] w-full h-screen  flex justify-center  pt-32">
       {/* {console.log("hi there from course card")} */}
       <div
-        className="bg-white p-6 rounded-md max-w-sm m-6 mt-0 cursor-pointer transform transition-transform duration-300 hover:scale-105"
+        className="bg-gray-900 p-6 rounded-md max-w-sm m-6 mt-0 cursor-pointer transform transition-transform duration-300 hover:scale-105 relative"
         style={{
           boxShadow: "0 0 60px rgba(255, 255, 255, 0.2)",
           width: "350px",
@@ -82,13 +81,13 @@ function Course() {
           alt=""
           className="w-full h-40 object-cover mb-4 rounded-md"
         />
-        <h2 className="text-xl font-bold text-gray-800 mb-2">
+        <h2 className="text-xl font-bold text-white mb-2">
           {currentCourse.title}
         </h2>
         <div className="line h-1 w-full bg-black opacity-30 mb-2"></div>
         <div className="price flex items-center gap-2 text-xl font-bold">
           <div className="discount-price text-purple-700 font-bold">
-            {currentCourse.price}
+            ₹{currentCourse.price}
           </div>
           <div className="real-price line-through text-gray-500 opacity-50">
             ₹7000
@@ -97,10 +96,85 @@ function Course() {
             42% off
           </span>
         </div>
+        <div
+          className="absolute right-1 bg-purple-600 w-10 h-10 rounded-md flex items-center justify-center "
+          style={{
+            bottom: "320px",
+          }}
+          onClick={(e) => {
+            e.preventDefault();
+            setupdateCourse(!updateCourse);
+          }}
+        >
+          {!updateCourse ? (
+            <img src={editPencilPhoto} width={40} />
+          ) : (
+            <p className="font-bold text-xl">X</p>
+          )}
+        </div>
       </div>
 
-
       {/* update card */}
+      {updateCourse && <UpdateCard courseId={courseId} />}
+    </div>
+  );
+
+
+  async function handleUpdateCourse(
+    courseId,
+    title,
+    description,
+    price,
+    imageLink
+  ) {
+    console.log("hi there from Updating course");
+    console.log("Course id", courseId);
+
+    try {
+      const response = await axios.put(
+        `http://localhost:3000/admin/courses/${courseId}`,
+        {
+           title,
+           description,
+           price,
+           imageLink,
+         },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+      if (response.status === 200) {
+        setCurrntCourse({
+          title,
+          description,
+          price,
+          imageLink,
+        });
+      }else{
+        console.log("Failed to update course. Server responded with:", response.status, response.data);
+      } 
+    } catch (error) {
+      console.log("Error in Updating courses", error);
+    }
+  }
+
+  function UpdateCard({ courseId }) {
+    const [title, setTitle] = useRecoilState(titleState);
+    const [description, setDescription] = useRecoilState(descriptionState);
+    const [price, setPrice] = useRecoilState(priceState);
+    const [imageLink, setImageLink] = useRecoilState(imageState);
+
+    useEffect(() => {
+      setTitle(currentCourse.title);
+      setDescription(currentCourse.description);
+      setPrice(currentCourse.price);
+      setImageLink(currentCourse.imageLink);
+    }, [currentCourse]);
+
+    return (
       <div>
         <form
           action=""
@@ -143,56 +217,44 @@ function Course() {
             }}
             onClick={(e) => {
               e.preventDefault();
-              handleUpdateCourse();
+              handleUpdateCourse(
+                courseId,
+                title,
+                description,
+                price,
+                imageLink
+              );
             }}
           >
             Update Course
           </button>
         </form>
       </div>
-    </div>
-  );
-
-  async function handleUpdateCourse() {
-    console.log("hi there from Updating course");
-    console.log("Course id", courseId);
-
-    try {
-      const response = await fetch(
-        `http://localhost:3000/admin/courses/${courseId}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({
-            title,
-            description,
-            price,
-            imageLink,
-          }),
-        }
-      );
-      if(response.ok){
-        setCurrntCourse({
-          ...currentCourse,
-          title,
-          description,
-          price,
-          imageLink,
-        })
-      }
-      const data = await response.json();
-      console.log("Updated course", data);
-      setTitle("");
-      setDescription("");
-      setPrice("");
-      setImageLink("");
-    } catch (error) {
-      console.log("Error in Updating courses", error);
-    }
+    );
   }
 }
 
 export default Course;
+
+// const titleState = atom({
+//   key: "titleState",
+//   default: "",
+// });
+// const descriptionState = atom({
+//   key: "descriptionState",
+//   default: "",
+// });
+// const imageState = atom({
+//   key: "imageState",
+//   default: "",
+// });
+
+// const priceState = atom({
+//   key: "priceState",
+//   default: "",
+// });
+
+// const currentCourseState = atom({
+//   key: "currentCourseState",
+//   default: {},
+// });

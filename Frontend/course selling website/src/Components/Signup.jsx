@@ -3,6 +3,7 @@ import React, { useState } from "react";
 function Signup() {
     const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [fullName, setFullname] = useState("");
 
 
   return (
@@ -10,11 +11,11 @@ function Signup() {
      
       <div className="flex flex-col items-center">
         <div>
-          <h1 className="text-4xl font-bold text-gray-500 mt-20">
-            Welcome back!
+          <h1 className="text-4xl font-bold text-gray-500 mt-20 text-center">
+          Create an Account
           </h1>
-          <p className="text-2xl font-semibold text-gray-400 ">
-            Let's get you signed in
+          <p className="text-2xl font-semibold text-gray-400 text-center">
+            Let's get you signed up
           </p>
         </div>
         <form
@@ -23,6 +24,18 @@ function Signup() {
           style={{ boxShadow: "0 0 30px 5px rgba(0,0,0,0.1)" }}
         >
           <div className="input">
+          <label htmlFor="fullname" className="sr-only">
+              Full Name
+            </label>
+            <input
+              id="fullname"
+              type="text"
+              placeholder="Full Name"
+              className="mt-6 block w-full px-3 py-2 bg-white border border-slate-300 text-sm placeholder-slate-400
+                focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
+              onChange={(e) => setFullname(e.target.value)}
+            />
+
             <label htmlFor="email" className="sr-only">
               Email address
             </label>
@@ -63,6 +76,7 @@ function Signup() {
                     },
                     body: JSON.stringify({
                       username,
+                      fullName,
                       password,
                     }),
                   });

@@ -4,14 +4,9 @@ import Course from "./Components/Course.jsx";
 import ShowCourses from "./Components/ShowCourses.jsx";
 import Signin from "./Components/Signin.jsx";
 import Signup from "./Components/Signup.jsx";
+import Landing from "./Components/Landing.jsx";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import {
-  RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
-} from "recoil";
+import { RecoilRoot } from "recoil";
 
 function App() {
   return (
@@ -21,7 +16,7 @@ function App() {
           <Appbar />
 
           <Routes>
-            {/* <Route path="/" element={<Landing />} /> */}
+            <Route path="/" element={<Landing />} />
             <Route path="/Signin" element={<Signin />} />
             <Route path="/Signup" element={<Signup />} />
             <Route path="/addcourse" element={<AddCourse />} />

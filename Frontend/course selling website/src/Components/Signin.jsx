@@ -1,8 +1,11 @@
 import React, { useState } from "react";
+import { atom, useRecoilState } from "recoil";
+
 
 function Signin() {
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [username, setUsername] = useRecoilState(userState);
+  const [password, setPassword] = useRecoilState(passwordState);
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -39,10 +42,10 @@ function Signin() {
     <div className="w-full h-screen bg-[#0F172A]  ">
       <div className="flex flex-col items-center">
         <div>
-          <h1 className="text-4xl font-bold text-gray-500 mt-20">
+          <h1 className="text-4xl font-bold text-gray-500 mt-20 text-center">
             Welcome back!
           </h1>
-          <p className="text-2xl font-semibold text-gray-400 ">
+          <p className="text-2xl font-semibold text-gray-400 text-center ">
             Let's get you signed in
           </p>
         </div>
@@ -62,6 +65,7 @@ function Signin() {
               className="mt-6 block w-full px-3 py-2 bg-white border border-slate-300  text-sm placeholder-slate-400
               focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
              "
+             
               onChange={(e) => setUsername(e.target.value)}
             />
             <label htmlFor="password" className="sr-only">
@@ -95,3 +99,14 @@ function Signin() {
 }
 
 export default Signin;
+
+
+const userState = atom({
+  key:'userState',
+  default:"",
+});
+
+const passwordState = atom({
+  key:'passwordState',
+  default:"",
+})

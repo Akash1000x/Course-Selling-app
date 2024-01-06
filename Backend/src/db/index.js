@@ -10,9 +10,26 @@ async function connectDB(){
         console.log(`MongoDB Connected: ${connectionInstance.connection.host}`)
     } catch (err) {
         console.error(`MongoDB connection failed `,err);
-        throw err;
-    }
+        retryConnection();
+  }
+};
+
+function retryConnection() {
+  // Retry after a delay (e.g., 5 seconds)
+  setTimeout(() => {
+    connectDB()
+      .then(() => {
+        console.log('Reconnected to the database');
+      
+      })
+      .catch((err) => {
+        console.log(`Error in connecting to db ${err}`);
+        // Recursive retry
+        retryConnection();
+      });
+  }, 5000);
 }
+
 
 
 export default connectDB;
