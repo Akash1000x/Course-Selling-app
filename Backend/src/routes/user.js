@@ -4,8 +4,6 @@ import Admin from '../models/admin.model.js';
 import Course from '../models/course.model.js';
 import authenticateJwt from '../middleware/auth.js';
 import jwt from 'jsonwebtoken';
-// import dotenv from 'dotenv';
-// dotenv.config();
 
 
 const router = express.Router();
@@ -14,7 +12,6 @@ const router = express.Router();
 const SECRET = `${process.env.SECRET}`;
 const tokenExpire = `${process.env.JWT_TOKEN_EXPIRE}`;
 
-console.log(SECRET);
 
 router.post('/signup', async (req, res) => {
     const { username, password } = req.body;

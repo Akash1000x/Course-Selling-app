@@ -5,9 +5,9 @@ function Landing() {
   const navigate = useNavigate();
 
   return (
-    <div className=" font-serif">
+    <div className=" font-serif overflow-hidden">
       <div
-        className="h-4/5 w-full flex flex-col-reverse lg:flex-row  justify-between items-center "
+        className="h-screen w-full flex flex-col-reverse lg:flex-row  justify-between items-center "
         style={{
           backgroundColor: "#EDEDED",
         }}
@@ -23,7 +23,7 @@ function Landing() {
             Become an instructor and change lives — including your own
           </h3>
           <button
-            className="bg-customColor hover:bg-customColorHover  text-white font-bold py-4 w-full my-8 text-xl"
+            className="bg-customColor hover:bg-customColorHover hover:scale-105 transition-all duration-500 ease-out text-white font-bold py-4 w-full my-8 text-xl"
             style={{
               boxShadow:
                 "0 2px 4px rgba(0, 0, 0, 0.2), 0 4px 6px rgba(0, 0, 0, 0.1)",

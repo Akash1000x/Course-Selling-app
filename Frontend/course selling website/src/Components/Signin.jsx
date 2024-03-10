@@ -9,6 +9,7 @@ function Signin() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    console.log(username, password);
 
     try {
       const response = await fetch("http://localhost:3000/admin/login", {
@@ -62,10 +63,10 @@ function Signin() {
               id="email"
               type="email"
               placeholder="Email"
+              value={username}
               className="mt-6 block w-full px-3 py-2 bg-white border border-slate-300  text-sm placeholder-slate-400
               focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
              "
-             
               onChange={(e) => setUsername(e.target.value)}
             />
             <label htmlFor="password" className="sr-only">
@@ -74,6 +75,7 @@ function Signin() {
             <input
               id="password"
               type="password"
+              value={password}
               placeholder="Password"
               className="border mt-4 w-full p-2 mb-4 focus:outline-none text-sm placeholder-slate-400 focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
               onChange={(e) => setPassword(e.target.value)}

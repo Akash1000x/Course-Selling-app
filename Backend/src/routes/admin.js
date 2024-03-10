@@ -4,19 +4,15 @@ import Admin from '../models/admin.model.js';
 import Course from '../models/course.model.js';
 import jwt from 'jsonwebtoken';
 import authenticateJwt from '../middleware/auth.js';
-// import dotenv from 'dotenv';
-// dotenv.config();
 
 
 
-// const app = express();
 const router = express.Router();
 
 
 const SECRET = `${process.env.SECRET}`;
 const tokenExpire = `${process.env.JWT_TOKEN_EXPIRE}`;
 
-console.log(SECRET);
 
 router.get('/me', authenticateJwt, (req, res) => {
     const { username } = req.user; // Extracting the username from req.user
@@ -45,6 +41,7 @@ router.post('/login', async (req, res) => {
     // logic to log in admin
     const username = req.body.username;
     const password = req.body.password;
+    console.log('Username:', username, 'Password:', password);
     const admin = await Admin.findOne({ username, password });
     if (admin) {
         const token = jwt.sign({ username, role: 'admin' }, SECRET, { expiresIn: tokenExpire });

@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function Signup() {
     const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [fullName, setFullname] = useState("");
 
+  useEffect(()=>{
+    console.log("username",username);
+    console.log("password",password);
+    console.log("fullname",fullName);
+  },[username,password,fullName])
 
   return (
     <div className="w-full h-screen bg-[#0F172A] ">
@@ -30,6 +35,7 @@ function Signup() {
             <input
               id="fullname"
               type="text"
+              value={fullName}
               placeholder="Full Name"
               className="mt-6 block w-full px-3 py-2 bg-white border border-slate-300 text-sm placeholder-slate-400
                 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
@@ -42,6 +48,7 @@ function Signup() {
             <input
               id="email"
               type="email"
+              value={username}
               placeholder="Email"
               className="mt-6 block w-full px-3 py-2 bg-white border border-slate-300  text-sm placeholder-slate-400
               focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500
@@ -53,6 +60,7 @@ function Signup() {
             </label>
             <input
               id="password"
+              value={password}
               type="password"
               placeholder="Password"
               className="border mt-4 w-full p-2 mb-4 focus:outline-none text-sm placeholder-slate-400 focus:border-sky-500 focus:ring-1 focus:ring-sky-500"
